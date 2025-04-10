@@ -1,13 +1,21 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import DateSelector from '@/components/DateSelector';
+import TabsContainer from '@/components/TabsContainer';
+import ActionButtons from '@/components/ActionButtons';
+import { ChurchProgramProvider } from '@/contexts/ChurchProgramContext';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <ChurchProgramProvider>
+      <div className="min-h-screen bg-background dark:bg-gray-900 text-foreground transition-colors duration-200 pb-8">
+        <div className="container max-w-md mx-auto px-4 py-8">
+          <DateSelector />
+          <TabsContainer />
+          <ActionButtons />
+        </div>
       </div>
-    </div>
+    </ChurchProgramProvider>
   );
 };
 

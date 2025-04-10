@@ -10,7 +10,9 @@ import {
   DropdownMenu, 
   DropdownMenuContent, 
   DropdownMenuItem, 
-  DropdownMenuTrigger 
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+  DropdownMenuLabel
 } from "@/components/ui/dropdown-menu";
 
 const ActionButtons: React.FC = () => {
@@ -107,30 +109,24 @@ const ActionButtons: React.FC = () => {
             className="rounded-full"
           >
             <Download size={18} className="mr-2" />
-            EDS
+            Exporter
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>Exporter Programme</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          
+          <DropdownMenuLabel className="font-semibold text-xs text-muted-foreground">EDS</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => exportElement("eds-content", "EDS", "jpg")}>
             Format JPG
           </DropdownMenuItem>
           <DropdownMenuItem onClick={() => exportElement("eds-content", "EDS", "pdf")}>
             Format PDF
           </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-      
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="rounded-full"
-          >
-            <Download size={18} className="mr-2" />
-            Culte
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
+          
+          <DropdownMenuSeparator />
+          
+          <DropdownMenuLabel className="font-semibold text-xs text-muted-foreground">Culte</DropdownMenuLabel>
           <DropdownMenuItem onClick={() => exportElement("culte-content", "Culte", "jpg")}>
             Format JPG
           </DropdownMenuItem>

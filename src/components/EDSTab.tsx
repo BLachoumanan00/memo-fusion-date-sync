@@ -21,7 +21,12 @@ const EDSTab: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="border-2 rounded-lg overflow-hidden shadow-md">
-        <div className="bg-church-primary text-white p-2 text-center font-bold">
+        <div className="bg-church-primary text-white p-2 text-center font-bold flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/7507b8f3-dd6b-4757-beb9-9238247d4584.png" 
+            alt="Litugo Icon" 
+            className="h-5 w-5 mr-2"
+          />
           EDS: {formattedDate}
         </div>
         <div className="divide-y">

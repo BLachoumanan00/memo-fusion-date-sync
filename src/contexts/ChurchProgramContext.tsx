@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { format } from "date-fns";
 
@@ -21,6 +20,7 @@ export type CulteData = {
   serviceFidelite: string;
   lecture: string;
   predication: string;
+  louange: string;
   cantique1: string;
   texteBase: string;
   cantique2: string;
@@ -59,6 +59,7 @@ const defaultCulteData: CulteData = {
   serviceFidelite: "",
   lecture: "",
   predication: "",
+  louange: "",
   cantique1: "",
   texteBase: "",
   cantique2: "",
@@ -80,10 +81,8 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
   const formattedDate = format(selectedDate, "EEEE, dd MMMM yyyy");
 
   useEffect(() => {
-    // Check if there's saved data for the selected date
     const savedDateKey = format(selectedDate, "yyyy-MM-dd");
     
-    // Load EDS data
     const savedEDSData = localStorage.getItem(`eds-${savedDateKey}`);
     if (savedEDSData) {
       setEDSData(JSON.parse(savedEDSData));
@@ -91,7 +90,6 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
       setEDSData(defaultEDSData);
     }
     
-    // Load Culte data
     const savedCulteData = localStorage.getItem(`culte-${savedDateKey}`);
     if (savedCulteData) {
       setCulteData(JSON.parse(savedCulteData));
@@ -99,7 +97,6 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
       setCulteData(defaultCulteData);
     }
     
-    // Load dark mode preference
     const darkModePref = localStorage.getItem("darkMode") === "true";
     setIsDarkMode(darkModePref);
     
@@ -141,7 +138,6 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
   
   const toggleEditMode = () => {
     if (editMode) {
-      // If we're exiting edit mode, save the changes
       saveChanges();
     }
     setEditMode(!editMode);

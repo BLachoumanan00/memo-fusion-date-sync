@@ -16,30 +16,27 @@ const DateSelector = () => {
   const { selectedDate, setSelectedDate, formattedDate } = useChurchProgram();
 
   return (
-    <div className="flex flex-col items-center p-4 w-full max-w-md mx-auto">
-      <div className="w-full mb-4">
-        <h1 className="text-2xl font-bold text-center mb-4">Programme d'Église</h1>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button
-              variant="outline"
-              className="w-full justify-start text-left font-normal border-2 border-church-primary/80 hover:bg-church-primary/20"
-            >
-              <CalendarIcon className="mr-2 h-4 w-4" />
-              {formattedDate}
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="center">
-            <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={(date) => date && setSelectedDate(date)}
-              initialFocus
-              className={cn("p-3 pointer-events-auto")}
-            />
-          </PopoverContent>
-        </Popover>
-      </div>
+    <div className="flex flex-col items-center p-2 w-full max-w-md mx-auto mb-4">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            className="w-full justify-start text-left font-normal border-2 border-church-primary/80 hover:bg-church-primary/20"
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {formattedDate}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="center">
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={(date) => date && setSelectedDate(date)}
+            initialFocus
+            className={cn("p-3 pointer-events-auto")}
+          />
+        </PopoverContent>
+      </Popover>
     </div>
   );
 };

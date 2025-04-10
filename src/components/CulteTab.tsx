@@ -2,6 +2,7 @@
 import React from "react";
 import { useChurchProgram } from "@/contexts/ChurchProgramContext";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const CulteTab: React.FC = () => {
   const { culteData, updateCulteField, formattedDate, editMode } = useChurchProgram();
@@ -11,6 +12,7 @@ const CulteTab: React.FC = () => {
     { label: "Service de fidélité:", key: "serviceFidelite" as const },
     { label: "Lecture:", key: "lecture" as const },
     { label: "Prédication:", key: "predication" as const },
+    { label: "Louange:", key: "louange" as const },
     { label: "Cantique:", key: "cantique1" as const },
     { label: "Texte de base:", key: "texteBase" as const },
     { label: "Cantique:", key: "cantique2" as const },
@@ -20,7 +22,12 @@ const CulteTab: React.FC = () => {
   return (
     <div className="w-full max-w-md mx-auto">
       <div className="border-2 rounded-lg overflow-hidden shadow-md">
-        <div className="bg-church-primary text-white p-2 text-center font-bold">
+        <div className="bg-church-primary text-white p-2 text-center font-bold flex items-center justify-center">
+          <img 
+            src="/lovable-uploads/7507b8f3-dd6b-4757-beb9-9238247d4584.png" 
+            alt="Litugo Icon" 
+            className="h-5 w-5 mr-2"
+          />
           CULTE: {formattedDate}
         </div>
         <div className="divide-y">
@@ -30,7 +37,7 @@ const CulteTab: React.FC = () => {
               {editMode ? (
                 <Input
                   className="w-1/2 border-none focus-visible:ring-0 p-0 h-auto"
-                  value={culteData[field.key]}
+                  value={culteData[field.key] || ""}
                   onChange={(e) => updateCulteField(field.key, e.target.value)}
                   placeholder="Entrer les informations..."
                 />

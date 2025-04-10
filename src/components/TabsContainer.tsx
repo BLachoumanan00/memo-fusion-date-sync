@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EDSTab from "./EDSTab";
 import CulteTab from "./CulteTab";
-import { Church, Check } from "lucide-react";
+import { Church } from "lucide-react";
 import Image from "./Image";
 
 const TabsContainer: React.FC = () => {
@@ -17,7 +17,11 @@ const TabsContainer: React.FC = () => {
       onValueChange={setActiveTab}
     >
       <TabsList className="grid grid-cols-2 w-full mb-4">
-        <TabsTrigger value="eds" className="flex items-center justify-center">
+        <TabsTrigger 
+          value="eds" 
+          className="flex items-center justify-center"
+          onClick={() => setActiveTab("eds")}
+        >
           <Image 
             src="/lovable-uploads/7507b8f3-dd6b-4757-beb9-9238247d4584.png" 
             alt="Litugo Icon" 
@@ -25,7 +29,11 @@ const TabsContainer: React.FC = () => {
           />
           EDS
         </TabsTrigger>
-        <TabsTrigger value="culte" className="flex items-center justify-center">
+        <TabsTrigger 
+          value="culte" 
+          className="flex items-center justify-center"
+          onClick={() => setActiveTab("culte")}
+        >
           <Church className="mr-2 h-4 w-4" />
           Culte
         </TabsTrigger>

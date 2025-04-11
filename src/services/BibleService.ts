@@ -16,6 +16,76 @@ export interface BibleVerse {
   version: BibleVersion;
 }
 
+// Mock Bible books
+export const bibleBooks = [
+  { id: 'genesis', name: 'Genèse', chapters: 50 },
+  { id: 'exodus', name: 'Exode', chapters: 40 },
+  { id: 'leviticus', name: 'Lévitique', chapters: 27 },
+  { id: 'numbers', name: 'Nombres', chapters: 36 },
+  { id: 'deuteronomy', name: 'Deutéronome', chapters: 34 },
+  { id: 'joshua', name: 'Josué', chapters: 24 },
+  { id: 'judges', name: 'Juges', chapters: 21 },
+  { id: 'ruth', name: 'Ruth', chapters: 4 },
+  { id: 'samuel1', name: '1 Samuel', chapters: 31 },
+  { id: 'samuel2', name: '2 Samuel', chapters: 24 },
+  { id: 'kings1', name: '1 Rois', chapters: 22 },
+  { id: 'kings2', name: '2 Rois', chapters: 25 },
+  { id: 'chronicles1', name: '1 Chroniques', chapters: 29 },
+  { id: 'chronicles2', name: '2 Chroniques', chapters: 36 },
+  { id: 'ezra', name: 'Esdras', chapters: 10 },
+  { id: 'nehemiah', name: 'Néhémie', chapters: 13 },
+  { id: 'esther', name: 'Esther', chapters: 10 },
+  { id: 'job', name: 'Job', chapters: 42 },
+  { id: 'psalms', name: 'Psaumes', chapters: 150 },
+  { id: 'proverbs', name: 'Proverbes', chapters: 31 },
+  { id: 'ecclesiastes', name: 'Ecclésiaste', chapters: 12 },
+  { id: 'song', name: 'Cantique des Cantiques', chapters: 8 },
+  { id: 'isaiah', name: 'Esaïe', chapters: 66 },
+  { id: 'jeremiah', name: 'Jérémie', chapters: 52 },
+  { id: 'lamentations', name: 'Lamentations', chapters: 5 },
+  { id: 'ezekiel', name: 'Ezéchiel', chapters: 48 },
+  { id: 'daniel', name: 'Daniel', chapters: 12 },
+  { id: 'hosea', name: 'Osée', chapters: 14 },
+  { id: 'joel', name: 'Joël', chapters: 3 },
+  { id: 'amos', name: 'Amos', chapters: 9 },
+  { id: 'obadiah', name: 'Abdias', chapters: 1 },
+  { id: 'jonah', name: 'Jonas', chapters: 4 },
+  { id: 'micah', name: 'Michée', chapters: 7 },
+  { id: 'nahum', name: 'Nahum', chapters: 3 },
+  { id: 'habakkuk', name: 'Habakuk', chapters: 3 },
+  { id: 'zephaniah', name: 'Sophonie', chapters: 3 },
+  { id: 'haggai', name: 'Aggée', chapters: 2 },
+  { id: 'zechariah', name: 'Zacharie', chapters: 14 },
+  { id: 'malachi', name: 'Malachie', chapters: 4 },
+  { id: 'matthew', name: 'Matthieu', chapters: 28 },
+  { id: 'mark', name: 'Marc', chapters: 16 },
+  { id: 'luke', name: 'Luc', chapters: 24 },
+  { id: 'john', name: 'Jean', chapters: 21 },
+  { id: 'acts', name: 'Actes', chapters: 28 },
+  { id: 'romans', name: 'Romains', chapters: 16 },
+  { id: 'corinthians1', name: '1 Corinthiens', chapters: 16 },
+  { id: 'corinthians2', name: '2 Corinthiens', chapters: 13 },
+  { id: 'galatians', name: 'Galates', chapters: 6 },
+  { id: 'ephesians', name: 'Ephésiens', chapters: 6 },
+  { id: 'philippians', name: 'Philippiens', chapters: 4 },
+  { id: 'colossians', name: 'Colossiens', chapters: 4 },
+  { id: 'thessalonians1', name: '1 Thessaloniciens', chapters: 5 },
+  { id: 'thessalonians2', name: '2 Thessaloniciens', chapters: 3 },
+  { id: 'timothy1', name: '1 Timothée', chapters: 6 },
+  { id: 'timothy2', name: '2 Timothée', chapters: 4 },
+  { id: 'titus', name: 'Tite', chapters: 3 },
+  { id: 'philemon', name: 'Philémon', chapters: 1 },
+  { id: 'hebrews', name: 'Hébreux', chapters: 13 },
+  { id: 'james', name: 'Jacques', chapters: 5 },
+  { id: 'peter1', name: '1 Pierre', chapters: 5 },
+  { id: 'peter2', name: '2 Pierre', chapters: 3 },
+  { id: 'john1', name: '1 Jean', chapters: 5 },
+  { id: 'john2', name: '2 Jean', chapters: 1 },
+  { id: 'john3', name: '3 Jean', chapters: 1 },
+  { id: 'jude', name: 'Jude', chapters: 1 },
+  { id: 'revelation', name: 'Apocalypse', chapters: 22 }
+];
+
 // Mock data for Louis Segond Bible (French)
 const louisSegondSamples: Record<string, string> = {
   "jean-3-16": "Car Dieu a tant aimé le monde qu'il a donné son Fils unique, afin que quiconque croit en lui ne périsse point, mais qu'il ait la vie éternelle.",
@@ -30,6 +100,24 @@ const easyEnglishSamples: Record<string, string> = {
   "psalm-23-1": "The Lord is my shepherd. He gives me everything that I need.",
   "matthew-5-3": "Happy are those who know that they need God. The kingdom of heaven belongs to them.",
   // Add more verses as needed
+};
+
+// Generate verses for a chapter
+export const getVersesForChapter = (book: string, chapter: number, version: BibleVersion): number[] => {
+  // In a real app, this would come from an API based on the book and chapter
+  // For now, we'll return a mock list based on common verse counts
+  const commonBooksWithManyVerses = ['psaumes', 'esaie', 'jeremiah'];
+  const isCommonLargeBook = commonBooksWithManyVerses.includes(book.toLowerCase());
+  
+  if (isCommonLargeBook) {
+    return Array.from({ length: 30 }, (_, i) => i + 1); // 30 verses
+  } else if (chapter === 1) {
+    return Array.from({ length: 25 }, (_, i) => i + 1); // 25 verses for chapter 1
+  } else if (chapter === 2) {
+    return Array.from({ length: 20 }, (_, i) => i + 1); // 20 verses for chapter 2
+  } else {
+    return Array.from({ length: 15 }, (_, i) => i + 1); // 15 verses for other chapters
+  }
 };
 
 // This would be replaced with an actual API call in a production app
@@ -141,6 +229,8 @@ export const BibleService = {
   fetchVerse: fetchBibleVerse,
   search: searchBible,
   parseReference: parseBibleReference,
+  getVersesForChapter,
+  bibleBooks,
 };
 
 export default BibleService;

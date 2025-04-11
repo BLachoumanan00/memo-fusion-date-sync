@@ -69,12 +69,98 @@ const sampleHymns: Hymn[] = [
       "Que son amour, que son Esprit unissent tous ses enfants.",
       "Devant son trône prosternons-nous pour l'adorer humblement."
     ]
+  },
+  {
+    id: 6,
+    title: "Je Louerai L'Éternel",
+    number: 6,
+    category: "Louange",
+    lyrics: [
+      "Je louerai l'Éternel de tout mon cœur,",
+      "Je raconterai toutes tes merveilles,",
+      "Je chanterai ton nom.",
+      "Je louerai l'Éternel de tout mon cœur,",
+      "Je ferai de toi le sujet de ma joie,",
+      "Alléluia!"
+    ]
+  },
+  {
+    id: 7,
+    title: "Dieu Tout-Puissant",
+    number: 7,
+    category: "Adoration",
+    lyrics: [
+      "Dieu tout-puissant, quand mon cœur considère",
+      "Tout l'univers créé par ton pouvoir :",
+      "Le ciel d'azur, les éclairs, le tonnerre,",
+      "Le clair matin ou les ombres du soir.",
+      "De tout mon être alors s'élève un chant :",
+      "Dieu tout-puissant, que tu es grand !"
+    ]
+  },
+  {
+    id: 8,
+    title: "Attaché À La Croix Pour Moi",
+    number: 8,
+    category: "Rédemption",
+    lyrics: [
+      "Attaché à la croix pour moi,",
+      "Attaché à la croix pour moi,",
+      "Il a pris mon péché, il m'a délivré,",
+      "Attaché à la croix pour moi."
+    ]
+  },
+  {
+    id: 9,
+    title: "Jésus Nous Sommes À Genoux",
+    number: 9,
+    category: "Prière",
+    lyrics: [
+      "Jésus, nous sommes à genoux,",
+      "Pour t'adorer, ô divin Maître !",
+      "Nous sommes à genoux,",
+      "Toi, tu vois au fond de notre être.",
+      "Nous t'adorons à genoux."
+    ]
+  },
+  {
+    id: 10,
+    title: "Debout, Sainte Cohorte",
+    number: 10,
+    category: "Combat",
+    lyrics: [
+      "Debout, sainte cohorte,",
+      "Soldats du Roi des rois !",
+      "Tenez d'une main forte",
+      "L'étendard de la croix !",
+      "Au sentier de la gloire",
+      "Jésus-Christ nous conduit,",
+      "De victoire en victoire",
+      "Il mène qui le suit."
+    ]
   }
 ];
+
+// Get all hymns
+const getAllHymns = async (): Promise<Hymn[]> => {
+  try {
+    // In a real app, this would fetch from an API or database
+    return sampleHymns;
+  } catch (error) {
+    console.error("Error getting all hymns:", error);
+    toast.error("Erreur lors de la récupération des cantiques");
+    throw error;
+  }
+};
 
 // Search hymns by number, title or lyrics
 const searchHymns = async (query: string): Promise<Hymn[]> => {
   try {
+    // If query is empty, return all hymns
+    if (!query.trim()) {
+      return sampleHymns;
+    }
+    
     const lowerQuery = query.toLowerCase().trim();
     
     // Check if query is a hymn number
@@ -129,6 +215,11 @@ const getCategories = async (): Promise<string[]> => {
 // Get hymns by category
 const getHymnsByCategory = async (category: string): Promise<Hymn[]> => {
   try {
+    // If category is "all", return all hymns
+    if (category === "all") {
+      return sampleHymns;
+    }
+    
     return sampleHymns.filter(hymn => 
       hymn.category?.toLowerCase() === category.toLowerCase()
     );
@@ -143,7 +234,8 @@ export const HymnalService = {
   searchHymns,
   getHymnByNumber,
   getCategories,
-  getHymnsByCategory
+  getHymnsByCategory,
+  getAllHymns
 };
 
 export default HymnalService;

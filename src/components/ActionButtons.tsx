@@ -16,11 +16,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const ActionButtons: React.FC = () => {
-  const { toggleDarkMode, isDarkMode, editMode, toggleEditMode, selectedDate } = useChurchProgram();
+  const { toggleDarkMode, isDarkMode, editMode, toggleEditMode, selectedDate, activeTab } = useChurchProgram();
 
-  const exportElement = async (elementId: string, type: string, fileFormat: "jpg" | "pdf") => {
+  const exportElement = async (fileFormat: "jpg" | "pdf") => {
+    // Determine which element to export based on the active tab
+    const elementId = activeTab === "eds" ? "eds-content" : "culte-content";
     const element = document.getElementById(elementId);
-    if (!element) return;
+    
+    if (!element) {
+      toast.error(`Élément ${activeTab.toUpperCase()} introuvable`);
+      return;
+    }
 
     try {
       const canvas = await html2canvas(element, {
@@ -33,7 +39,7 @@ const ActionButtons: React.FC = () => {
         const downloadLink = document.createElement("a");
         const formattedDate = format(selectedDate, "yyyy-MM-dd");
         downloadLink.href = dataUrl;
-        downloadLink.download = `${type}-${formattedDate}.jpg`;
+        downloadLink.download = `${activeTab.toUpperCase()}-${formattedDate}.jpg`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
@@ -53,7 +59,7 @@ const ActionButtons: React.FC = () => {
         printWindow.document.write(`
           <html>
             <head>
-              <title>${type}-${formattedDate}</title>
+              <title>${activeTab.toUpperCase()}-${formattedDate}</title>
               <style>
                 body { margin: 0; display: flex; justify-content: center; }
                 img { max-width: 100%; height: auto; }
@@ -64,7 +70,7 @@ const ActionButtons: React.FC = () => {
               </style>
             </head>
             <body>
-              <img src="${dataUrl}" alt="${type}">
+              <img src="${dataUrl}" alt="${activeTab.toUpperCase()}">
               <script>
                 setTimeout(() => {
                   window.print();
@@ -76,8 +82,9 @@ const ActionButtons: React.FC = () => {
         printWindow.document.close();
       }
       
-      toast.success(`${type} exporté en format ${fileFormat.toUpperCase()}`);
+      toast.success(`${activeTab.toUpperCase()} exporté en format ${fileFormat.toUpperCase()}`);
     } catch (error) {
+      console.error("Export error:", error);
       toast.error(`Erreur lors de l'exportation: ${error}`);
     }
   };
@@ -113,24 +120,13 @@ const ActionButtons: React.FC = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Exporter Programme</DropdownMenuLabel>
+          <DropdownMenuLabel>Exporter {activeTab.toUpperCase()}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           
-          <DropdownMenuLabel className="font-semibold text-xs text-muted-foreground">EDS</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => exportElement("eds-content", "EDS", "jpg")}>
+          <DropdownMenuItem onClick={() => exportElement("jpg")}>
             Format JPG
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => exportElement("eds-content", "EDS", "pdf")}>
-            Format PDF
-          </DropdownMenuItem>
-          
-          <DropdownMenuSeparator />
-          
-          <DropdownMenuLabel className="font-semibold text-xs text-muted-foreground">Culte</DropdownMenuLabel>
-          <DropdownMenuItem onClick={() => exportElement("culte-content", "Culte", "jpg")}>
-            Format JPG
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => exportElement("culte-content", "Culte", "pdf")}>
+          <DropdownMenuItem onClick={() => exportElement("pdf")}>
             Format PDF
           </DropdownMenuItem>
         </DropdownMenuContent>

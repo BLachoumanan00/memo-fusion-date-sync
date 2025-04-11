@@ -1,13 +1,14 @@
 
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EDSTab from "./EDSTab";
 import CulteTab from "./CulteTab";
 import { Church } from "lucide-react";
 import Image from "./Image";
+import { useChurchProgram } from "@/contexts/ChurchProgramContext";
 
 const TabsContainer: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("eds");
+  const { activeTab, setActiveTab } = useChurchProgram();
 
   return (
     <Tabs
@@ -20,7 +21,6 @@ const TabsContainer: React.FC = () => {
         <TabsTrigger 
           value="eds" 
           className="flex items-center justify-center"
-          onClick={() => setActiveTab("eds")}
         >
           <Image 
             src="/lovable-uploads/7507b8f3-dd6b-4757-beb9-9238247d4584.png" 
@@ -32,7 +32,6 @@ const TabsContainer: React.FC = () => {
         <TabsTrigger 
           value="culte" 
           className="flex items-center justify-center"
-          onClick={() => setActiveTab("culte")}
         >
           <Church className="mr-2 h-4 w-4" />
           Culte

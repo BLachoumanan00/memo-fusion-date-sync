@@ -6,19 +6,11 @@ import { Edit, Save, Sun, Moon, Camera } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import html2canvas from "html2canvas";
-import { 
-  DropdownMenu, 
-  DropdownMenuContent, 
-  DropdownMenuItem, 
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-  DropdownMenuLabel
-} from "@/components/ui/dropdown-menu";
 
 const ActionButtons: React.FC = () => {
   const { toggleDarkMode, isDarkMode, editMode, toggleEditMode, selectedDate, activeTab } = useChurchProgram();
 
-  const exportElement = async (fileFormat: "jpg" | "pdf") => {
+  const takeScreenshot = async () => {
     // Safeguard against undefined activeTab
     if (!activeTab) {
       toast.error("Unable to determine which tab to export");
@@ -39,59 +31,20 @@ const ActionButtons: React.FC = () => {
         backgroundColor: isDarkMode ? "#1f2937" : "#ffffff",
       });
       
-      if (fileFormat === "jpg") {
-        const dataUrl = canvas.toDataURL("image/jpeg");
-        
-        const downloadLink = document.createElement("a");
-        const formattedDate = format(selectedDate, "yyyy-MM-dd");
-        downloadLink.href = dataUrl;
-        downloadLink.download = `${activeTab.toUpperCase()}-${formattedDate}.jpg`;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      } else if (fileFormat === "pdf") {
-        // Using jsPDF would be ideal here, but since it's not installed,
-        // we'll use a workaround with the canvas
-        const dataUrl = canvas.toDataURL("image/jpeg");
-        
-        // Create a new window for the PDF-like view
-        const printWindow = window.open('', '_blank');
-        if (!printWindow) {
-          toast.error("Pop-up blocked. Please allow pop-ups for PDF export.");
-          return;
-        }
-        
-        const formattedDate = format(selectedDate, "yyyy-MM-dd");
-        printWindow.document.write(`
-          <html>
-            <head>
-              <title>${activeTab.toUpperCase()}-${formattedDate}</title>
-              <style>
-                body { margin: 0; display: flex; justify-content: center; }
-                img { max-width: 100%; height: auto; }
-                @media print {
-                  body { margin: 0; }
-                  img { width: 100%; }
-                }
-              </style>
-            </head>
-            <body>
-              <img src="${dataUrl}" alt="${activeTab.toUpperCase()}">
-              <script>
-                setTimeout(() => {
-                  window.print();
-                }, 500);
-              </script>
-            </body>
-          </html>
-        `);
-        printWindow.document.close();
-      }
+      const dataUrl = canvas.toDataURL("image/jpeg");
       
-      toast.success(`${activeTab.toUpperCase()} exporté en format ${fileFormat.toUpperCase()}`);
+      const downloadLink = document.createElement("a");
+      const formattedDate = format(selectedDate, "yyyy-MM-dd");
+      downloadLink.href = dataUrl;
+      downloadLink.download = `${activeTab.toUpperCase()}-${formattedDate}.jpg`;
+      document.body.appendChild(downloadLink);
+      downloadLink.click();
+      document.body.removeChild(downloadLink);
+      
+      toast.success(`${activeTab.toUpperCase()} capturé en JPG`);
     } catch (error) {
-      console.error("Export error:", error);
-      toast.error(`Erreur lors de l'exportation: ${error}`);
+      console.error("Screenshot error:", error);
+      toast.error(`Erreur lors de la capture: ${error}`);
     }
   };
 
@@ -115,28 +68,15 @@ const ActionButtons: React.FC = () => {
         {editMode ? "Enregistrer" : "Modifier"}
       </Button>
       
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="outline"
-            className="rounded-full"
-          >
-            <Camera size={18} className="mr-2" />
-            Capture écran
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Capture {activeTab ? activeTab.toUpperCase() : ''}</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          
-          <DropdownMenuItem onClick={() => exportElement("jpg")}>
-            Format JPG
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => exportElement("pdf")}>
-            Format PDF
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <Button
+        variant="outline"
+        className="rounded-full"
+        size="icon"
+        onClick={takeScreenshot}
+        title="Capture écran"
+      >
+        <Camera size={18} />
+      </Button>
     </div>
   );
 };

@@ -112,7 +112,7 @@ const HymnSelector: React.FC<HymnSelectorProps> = ({ onSelect }) => {
               <SelectValue placeholder="Catégorie" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">Toutes</SelectItem>
+              <SelectItem value="all">Toutes</SelectItem>
               {categories.map(category => (
                 <SelectItem key={category} value={category}>
                   {category}

@@ -2,7 +2,7 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useChurchProgram } from "@/contexts/ChurchProgramContext";
-import { Edit, Save, Sun, Moon, Download } from "lucide-react";
+import { Edit, Save, Sun, Moon, Camera } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
 import html2canvas from "html2canvas";
@@ -121,12 +121,12 @@ const ActionButtons: React.FC = () => {
             variant="outline"
             className="rounded-full"
           >
-            <Download size={18} className="mr-2" />
-            Exporter
+            <Camera size={18} className="mr-2" />
+            Capture écran
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Exporter {activeTab ? activeTab.toUpperCase() : ''}</DropdownMenuLabel>
+          <DropdownMenuLabel>Capture {activeTab ? activeTab.toUpperCase() : ''}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           
           <DropdownMenuItem onClick={() => exportElement("jpg")}>

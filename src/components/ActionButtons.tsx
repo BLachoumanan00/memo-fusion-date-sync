@@ -19,6 +19,12 @@ const ActionButtons: React.FC = () => {
   const { toggleDarkMode, isDarkMode, editMode, toggleEditMode, selectedDate, activeTab } = useChurchProgram();
 
   const exportElement = async (fileFormat: "jpg" | "pdf") => {
+    // Safeguard against undefined activeTab
+    if (!activeTab) {
+      toast.error("Unable to determine which tab to export");
+      return;
+    }
+    
     // Determine which element to export based on the active tab
     const elementId = activeTab === "eds" ? "eds-content" : "culte-content";
     const element = document.getElementById(elementId);
@@ -120,7 +126,7 @@ const ActionButtons: React.FC = () => {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
-          <DropdownMenuLabel>Exporter {activeTab.toUpperCase()}</DropdownMenuLabel>
+          <DropdownMenuLabel>Exporter {activeTab ? activeTab.toUpperCase() : ''}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           
           <DropdownMenuItem onClick={() => exportElement("jpg")}>

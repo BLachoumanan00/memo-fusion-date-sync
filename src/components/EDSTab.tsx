@@ -15,6 +15,7 @@ const EDSTab: React.FC = () => {
     { label: "5 Minutes Spéciale:", key: "cinqMinutesSpeciale" as const },
     { label: "Introduction EDS:", key: "introductionEDS" as const },
     { label: "10 Minutes Missionnaire:", key: "dixMinutesMissionnaire" as const },
+    { label: "Texte de base:", key: "texteBase" as const },
     { label: "Cantique:", key: "cantique2" as const },
   ];
 
@@ -36,7 +37,7 @@ const EDSTab: React.FC = () => {
               {editMode ? (
                 <Input
                   className="w-1/2 border-none focus-visible:ring-0 p-0 h-auto"
-                  value={edsData[field.key]}
+                  value={edsData[field.key] || ""}
                   onChange={(e) => updateEDSField(field.key, e.target.value)}
                   placeholder="Entrer les informations..."
                 />

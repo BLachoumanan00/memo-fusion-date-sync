@@ -15,6 +15,7 @@ export type EDSData = {
   introductionEDS: string;
   dixMinutesMissionnaire: string;
   cantique2: string;
+  texteBase: string;
   bibleVerses?: BibleVerse[];
   hymns?: Hymn[];
 };
@@ -55,6 +56,8 @@ type ChurchProgramContextType = {
   addCulteHymn: (hymn: Hymn) => void;
   removeEDSHymn: (index: number) => void;
   removeCulteHymn: (index: number) => void;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 };
 
 const defaultEDSData: EDSData = {
@@ -67,6 +70,7 @@ const defaultEDSData: EDSData = {
   introductionEDS: "",
   dixMinutesMissionnaire: "",
   cantique2: "",
+  texteBase: "",
   bibleVerses: [],
   hymns: [],
 };
@@ -97,6 +101,7 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
   const [culteData, setCulteData] = useState<CulteData>(defaultCulteData);
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [editMode, setEditMode] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("eds");
   const formattedDate = format(selectedDate, "EEEE, dd MMMM yyyy");
 
   useEffect(() => {
@@ -124,7 +129,18 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
     } else {
       document.documentElement.classList.remove("dark");
     }
+
+    // Load the active tab preference
+    const savedActiveTab = localStorage.getItem("activeTab");
+    if (savedActiveTab) {
+      setActiveTab(savedActiveTab);
+    }
   }, [selectedDate]);
+
+  // Save active tab when it changes
+  useEffect(() => {
+    localStorage.setItem("activeTab", activeTab);
+  }, [activeTab]);
 
   const updateEDSField = (field: keyof EDSData, value: string) => {
     setEDSData((prev) => ({ ...prev, [field]: value }));
@@ -247,6 +263,8 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
         addCulteHymn,
         removeEDSHymn,
         removeCulteHymn,
+        activeTab,
+        setActiveTab,
       }}
     >
       {children}

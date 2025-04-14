@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Search, Music, List } from "lucide-react";
+import { Search, Music, List, Info } from "lucide-react";
 import { HymnalService, Hymn } from "@/services/HymnalService";
 import { toast } from "sonner";
 import { 
@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 interface HymnSelectorProps {
   onSelect: (hymn: Hymn) => void;
@@ -27,20 +28,25 @@ const HymnSelector: React.FC<HymnSelectorProps> = ({ onSelect }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [loadingMessage, setLoadingMessage] = useState("Chargement des cantiques...");
 
   useEffect(() => {
     const loadData = async () => {
       try {
+        setLoadingMessage("Chargement des catégories...");
         // Load categories
         const cats = await HymnalService.getCategories();
         setCategories(cats);
         
+        setLoadingMessage("Chargement des cantiques...");
         // Load all hymns
         const hymns = await HymnalService.searchHymns("");
         setAllHymns(hymns);
+        setLoadingMessage("");
       } catch (error) {
         console.error("Error loading data:", error);
         toast.error("Erreur lors du chargement des données");
+        setLoadingMessage("");
       }
     };
     
@@ -66,7 +72,7 @@ const HymnSelector: React.FC<HymnSelectorProps> = ({ onSelect }) => {
         searchResults = await HymnalService.searchHymns(query);
         
         // Filter by category if one is selected
-        if (selectedCategory) {
+        if (selectedCategory && selectedCategory !== "all") {
           searchResults = searchResults.filter(
             hymn => hymn.category?.toLowerCase() === selectedCategory.toLowerCase()
           );
@@ -99,7 +105,7 @@ const HymnSelector: React.FC<HymnSelectorProps> = ({ onSelect }) => {
   const renderHymnItem = (hymn: Hymn) => (
     <div 
       key={hymn.id}
-      className="p-3 border rounded-md hover:bg-muted/50 cursor-pointer"
+      className="p-3 border rounded-md hover:bg-muted/50 cursor-pointer mb-2"
       onClick={() => handleSelectHymn(hymn)}
     >
       <div className="flex justify-between items-center">
@@ -126,6 +132,18 @@ const HymnSelector: React.FC<HymnSelectorProps> = ({ onSelect }) => {
         <CardTitle className="flex items-center gap-2">
           <Music size={18} />
           Sélectionner un cantique
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Info size={16} className="text-muted-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="w-[220px] text-xs">
+                  Base de données complète des Hymnes et Louanges disponible. Recherchez par numéro, titre ou catégorie.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -178,17 +196,25 @@ const HymnSelector: React.FC<HymnSelectorProps> = ({ onSelect }) => {
 
             {results.length > 0 && (
               <div className="mt-4 space-y-2">
-                {results.map(hymn => renderHymnItem(hymn))}
+                <ScrollArea className="h-[400px]">
+                  {results.map(hymn => renderHymnItem(hymn))}
+                </ScrollArea>
               </div>
             )}
           </TabsContent>
           
           <TabsContent value="list">
-            <ScrollArea className="h-[400px]">
-              <div className="space-y-2">
-                {allHymns.map(hymn => renderHymnItem(hymn))}
+            {loadingMessage ? (
+              <div className="flex justify-center items-center h-[400px]">
+                <p className="text-muted-foreground">{loadingMessage}</p>
               </div>
-            </ScrollArea>
+            ) : (
+              <ScrollArea className="h-[400px]">
+                <div className="space-y-2">
+                  {allHymns.map(hymn => renderHymnItem(hymn))}
+                </div>
+              </ScrollArea>
+            )}
           </TabsContent>
         </Tabs>
       </CardContent>

@@ -6,11 +6,9 @@ import ActionButtons from '@/components/ActionButtons';
 import { ChurchProgramProvider } from '@/contexts/ChurchProgramContext';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Book, Music } from 'lucide-react';
-import HymnSelector from '@/components/HymnSelector';
+import { Book } from 'lucide-react';
 import BibleVerseSelector from '@/components/BibleVerseSelector';
 import { BibleVerse } from '@/services/BibleService';
-import { Hymn } from '@/services/HymnalService';
 
 const Index = () => {
   return (
@@ -46,30 +44,6 @@ const FeatureButtons = () => {
     }
   };
   
-  const handleHymnSelect = (hymn: Hymn) => {
-    if (activeTab === "culte") {
-      // Determine which cantique field to update based on what's already filled
-      if (!hymn.number) return;
-      
-      if (!culteData.cantique1) {
-        updateCulteField("cantique1", `#${hymn.number} - ${hymn.title}`);
-      } else if (!culteData.cantique2) {
-        updateCulteField("cantique2", `#${hymn.number} - ${hymn.title}`);
-      } else {
-        updateCulteField("cantique3", `#${hymn.number} - ${hymn.title}`);
-      }
-    } else {
-      // Determine which cantique field to update based on what's already filled
-      if (!hymn.number) return;
-      
-      if (!edsData.cantique1) {
-        updateEDSField("cantique1", `#${hymn.number} - ${hymn.title}`);
-      } else {
-        updateEDSField("cantique2", `#${hymn.number} - ${hymn.title}`);
-      }
-    }
-  };
-  
   return (
     <div className="flex justify-center gap-2 mb-4">
       <Sheet>
@@ -91,26 +65,6 @@ const FeatureButtons = () => {
           </div>
         </SheetContent>
       </Sheet>
-      
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" className="flex items-center gap-2">
-            <Music size={18} />
-            Cantique
-          </Button>
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Sélectionnez un cantique</SheetTitle>
-            <SheetDescription>
-              Recherchez et sélectionnez un cantique pour votre programme.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="mt-4">
-            <HymnSelector onSelect={handleHymnSelect} />
-          </div>
-        </SheetContent>
-      </Sheet>
     </div>
   );
 };
@@ -119,3 +73,4 @@ const FeatureButtons = () => {
 import { useChurchProgram } from '@/contexts/ChurchProgramContext';
 
 export default Index;
+

@@ -2,7 +2,6 @@
 import React from "react";
 import { useChurchProgram } from "@/contexts/ChurchProgramContext";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 const CulteTab: React.FC = () => {
   const { culteData, updateCulteField, formattedDate, editMode } = useChurchProgram();
@@ -13,10 +12,7 @@ const CulteTab: React.FC = () => {
     { label: "Lecture:", key: "lecture" as const },
     { label: "Prédication:", key: "predication" as const },
     { label: "Louange:", key: "louange" as const },
-    { label: "Cantique:", key: "cantique1" as const },
     { label: "Texte de base:", key: "texteBase" as const },
-    { label: "Cantique:", key: "cantique2" as const },
-    { label: "Cantique:", key: "cantique3" as const },
   ];
 
   return (

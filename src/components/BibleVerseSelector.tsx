@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -29,7 +28,7 @@ const BibleVerseSelector: React.FC<BibleVerseSelectorProps> = ({ onSelect }) => 
   
   // Navigation state
   const [navigationLevel, setNavigationLevel] = useState<NavigationLevel>('books');
-  const [selectedBook, setSelectedBook] = useState<{id: string, name: string} | null>(null);
+  const [selectedBook, setSelectedBook] = useState<{id: string, name: string, chapters?: number} | null>(null);
   const [selectedChapter, setSelectedChapter] = useState<number | null>(null);
 
   const handleSearchVerse = async () => {
@@ -69,7 +68,7 @@ const BibleVerseSelector: React.FC<BibleVerseSelectorProps> = ({ onSelect }) => 
     setReference("");
   };
 
-  const handleBookSelect = (book: {id: string, name: string}) => {
+  const handleBookSelect = (book: {id: string, name: string, chapters: number}) => {
     setSelectedBook(book);
     setNavigationLevel('chapters');
   };
@@ -79,19 +78,19 @@ const BibleVerseSelector: React.FC<BibleVerseSelectorProps> = ({ onSelect }) => 
     setNavigationLevel('verses');
   };
 
-  const handleVerseSelect = async (verse: number) => {
+  const handleVerseSelect = async (verseNumber: number) => {
     if (!selectedBook || selectedChapter === null) return;
     
     setIsLoading(true);
     
     try {
-      const verse = await BibleService.fetchVerse({
+      const fetchedVerse = await BibleService.fetchVerse({
         book: selectedBook.name,
         chapter: selectedChapter,
-        verse: verse
+        verse: verseNumber
       }, version);
       
-      setVerseResult(verse);
+      setVerseResult(fetchedVerse);
     } catch (error) {
       console.error("Error fetching verse:", error);
       toast.error("Erreur lors de la récupération du verset");
@@ -132,7 +131,10 @@ const BibleVerseSelector: React.FC<BibleVerseSelectorProps> = ({ onSelect }) => 
   const renderChaptersList = () => {
     if (!selectedBook) return null;
     
-    const chapters = Array.from({ length: selectedBook.chapters }, (_, i) => i + 1);
+    const bookWithChapters = bibleBooks.find(book => book.id === selectedBook.id);
+    if (!bookWithChapters) return null;
+    
+    const chapters = Array.from({ length: bookWithChapters.chapters }, (_, i) => i + 1);
     
     return (
       <div className="mt-4">

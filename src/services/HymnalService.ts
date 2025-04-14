@@ -138,6 +138,126 @@ const sampleHymns: Hymn[] = [
       "De victoire en victoire",
       "Il mène qui le suit."
     ]
+  },
+  {
+    id: 11,
+    title: "Le Seigneur Est Ma Lumière",
+    number: 11,
+    category: "Confiance",
+    lyrics: [
+      "Le Seigneur est ma lumière et mon salut,",
+      "De qui aurais-je crainte ?",
+      "Le Seigneur est le soutien de ma vie,",
+      "De qui aurais-je peur ?"
+    ]
+  },
+  {
+    id: 12,
+    title: "Jésus Tu Es Le Roi Des Rois",
+    number: 12,
+    category: "Adoration",
+    lyrics: [
+      "Jésus, tu es le Roi des rois,",
+      "Le Seigneur des seigneurs.",
+      "Tu règnes sur toute la terre,",
+      "Tu es le Roi des rois."
+    ]
+  },
+  {
+    id: 13,
+    title: "Quand Je Contemple Cette Croix",
+    number: 13,
+    category: "Rédemption",
+    lyrics: [
+      "Quand je contemple cette croix",
+      "Où tu mourus, Prince de gloire,",
+      "Je compte comme perte et sable",
+      "Les trésors qui m'ont séduit."
+    ]
+  },
+  {
+    id: 14,
+    title: "Qu'il Fait Bon À Ton Service",
+    number: 14,
+    category: "Service",
+    lyrics: [
+      "Qu'il fait bon à ton service, Jésus, mon Sauveur !",
+      "Qu'il est doux le sacrifice que t'offre mon cœur !",
+      "Prends, ô Jésus, prends ma vie, elle est toute à toi.",
+      "Et dans ta grâce infinie, dispose de moi."
+    ]
+  },
+  {
+    id: 15,
+    title: "Vers Toi Monte Notre Hommage",
+    number: 15,
+    category: "Adoration",
+    lyrics: [
+      "Vers toi monte notre hommage,",
+      "Fils de Dieu, puissant Sauveur,",
+      "Qui demeures d'âge en âge,",
+      "Le refuge du pécheur."
+    ]
+  },
+  {
+    id: 16,
+    title: "Oui, Je Te Bénirai",
+    number: 16,
+    category: "Louange",
+    lyrics: [
+      "Oui, je te bénirai, j'exalterai ton nom,",
+      "Je m'inclinerai devant toi.",
+      "Oui, je veux t'adorer, te donner tout mon cœur,",
+      "Car tu es mon Dieu, mon Sauveur."
+    ]
+  },
+  {
+    id: 17,
+    title: "Gloire À Toi",
+    number: 17,
+    category: "Louange",
+    lyrics: [
+      "Gloire à toi, gloire à toi,",
+      "Agneau de Dieu, je chante pour toi.",
+      "Gloire à toi, gloire à toi,",
+      "Ton nom est glorieux."
+    ]
+  },
+  {
+    id: 18,
+    title: "Ô Sainte Ardeur",
+    number: 18,
+    category: "Service",
+    lyrics: [
+      "Ô sainte ardeur, ô joie ineffable,",
+      "Au cœur qui t'aime, au cœur qui te sert.",
+      "Travailler, souffrir, combattre pour toi,",
+      "C'est mon bonheur, mon doux Sauveur."
+    ]
+  },
+  {
+    id: 19,
+    title: "La Voix Du Seigneur M'appelle",
+    number: 19,
+    category: "Appel",
+    lyrics: [
+      "La voix du Seigneur m'appelle :",
+      "Prends ta croix et viens, suis-moi.",
+      "Je réponds : Sauveur fidèle,",
+      "Me voici, je suis à toi."
+    ]
+  },
+  {
+    id: 20,
+    title: "Que Serait Ma Vie",
+    number: 20,
+    category: "Confiance",
+    lyrics: [
+      "Que serait ma vie sans toi, Seigneur ?",
+      "Une vie vouée au néant.",
+      "Sans espoir et sans lendemain,",
+      "Sans refuge, sans chemin."
+    ]
   }
 ];
 

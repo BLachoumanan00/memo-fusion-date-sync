@@ -2,90 +2,71 @@
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useChurchProgram } from "@/contexts/ChurchProgramContext";
-import { Edit, Save, Sun, Moon, Camera } from "lucide-react";
+import { Edit, Save, Sun, Moon, Image } from "lucide-react";
 import { format } from "date-fns";
 import { toast } from "sonner";
+import html2canvas from "html2canvas";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-  DialogClose
+  DialogTrigger
 } from "@/components/ui/dialog";
 
 const ActionButtons: React.FC = () => {
-  const { toggleDarkMode, isDarkMode, editMode, toggleEditMode, selectedDate, activeTab } = useChurchProgram();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { toggleDarkMode, isDarkMode, editMode, toggleEditMode, selectedDate } = useChurchProgram();
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [cameraOpen, setCameraOpen] = useState<boolean>(false);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const [screenshotOpen, setScreenshotOpen] = useState(false);
 
-  const openCamera = async () => {
-    setCameraOpen(true);
+  const captureScreenshot = async () => {
+    setIsCapturing(true);
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      if (videoRef.current) {
-        videoRef.current.srcObject = stream;
-      }
-    } catch (error) {
-      console.error("Camera access error:", error);
-      toast.error("Impossible d'accéder à la caméra");
-      setCameraOpen(false);
-    }
-  };
-
-  const closeCamera = () => {
-    if (videoRef.current && videoRef.current.srcObject) {
-      const stream = videoRef.current.srcObject as MediaStream;
-      stream.getTracks().forEach(track => track.stop());
-      videoRef.current.srcObject = null;
-    }
-    setCameraOpen(false);
-    setCapturedImage(null);
-  };
-
-  const takePicture = () => {
-    if (videoRef.current && canvasRef.current) {
-      const video = videoRef.current;
-      const canvas = canvasRef.current;
-      const context = canvas.getContext('2d');
+      // Close the dialog to capture the app
+      setScreenshotOpen(false);
       
-      if (context) {
-        // Set canvas dimensions to match video
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        
-        // Draw video frame to canvas
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        // Convert canvas to data URL and save
-        const imageDataUrl = canvas.toDataURL('image/jpeg');
-        setCapturedImage(imageDataUrl);
-        
-        // Stop camera stream
-        if (video.srcObject) {
-          const stream = video.srcObject as MediaStream;
-          stream.getTracks().forEach(track => track.stop());
-          video.srcObject = null;
-        }
+      // Small delay to ensure dialog is closed
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      const appElement = document.querySelector("#root") as HTMLElement;
+      if (!appElement) {
+        throw new Error("Application element not found");
       }
+      
+      const canvas = await html2canvas(appElement, {
+        allowTaint: true,
+        useCORS: true,
+        logging: false,
+        scale: 2 // Higher quality
+      });
+      
+      const imageDataUrl = canvas.toDataURL("image/jpeg", 0.9);
+      setCapturedImage(imageDataUrl);
+      setScreenshotOpen(true);
+      
+      toast.success("Capture d'écran réussie");
+    } catch (error) {
+      console.error("Screenshot error:", error);
+      toast.error("Erreur lors de la capture d'écran");
+    } finally {
+      setIsCapturing(false);
     }
   };
 
-  const saveImage = () => {
+  const saveScreenshot = () => {
     if (capturedImage) {
       try {
         const downloadLink = document.createElement("a");
         const formattedDate = format(selectedDate, "yyyy-MM-dd");
         downloadLink.href = capturedImage;
-        downloadLink.download = `Photo-${formattedDate}.jpg`;
+        downloadLink.download = `Screenshot-${formattedDate}.jpg`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
         
-        toast.success("Photo capturée et enregistrée");
-        closeCamera();
+        toast.success("Capture d'écran enregistrée");
+        setCapturedImage(null);
       } catch (error) {
         console.error("Save error:", error);
         toast.error(`Erreur lors de l'enregistrement: ${error}`);
@@ -113,47 +94,43 @@ const ActionButtons: React.FC = () => {
         {editMode ? "Enregistrer" : "Modifier"}
       </Button>
       
-      <Dialog open={cameraOpen} onOpenChange={setCameraOpen}>
+      <Dialog open={screenshotOpen} onOpenChange={setScreenshotOpen}>
         <DialogTrigger asChild>
           <Button
             variant="outline"
             className="rounded-full"
             size="icon"
-            onClick={openCamera}
-            title="Prendre une photo"
+            onClick={() => setScreenshotOpen(true)}
+            title="Capture d'écran"
           >
-            <Camera size={18} />
+            <Image size={18} />
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Appareil photo</DialogTitle>
+            <DialogTitle>Capture d'écran</DialogTitle>
           </DialogHeader>
           <div className="flex flex-col items-center space-y-4">
             {!capturedImage ? (
-              <>
-                <video 
-                  ref={videoRef} 
-                  autoPlay 
-                  playsInline 
-                  className="w-full rounded-lg"
-                />
-                <Button onClick={takePicture}>Prendre une photo</Button>
-              </>
+              <Button 
+                onClick={captureScreenshot}
+                disabled={isCapturing}
+              >
+                {isCapturing ? "Capture en cours..." : "Prendre une capture d'écran"}
+              </Button>
             ) : (
               <>
                 <img 
                   src={capturedImage} 
-                  alt="Captured" 
+                  alt="Capture d'écran" 
                   className="w-full rounded-lg" 
                 />
                 <div className="flex gap-2">
                   <Button onClick={() => setCapturedImage(null)}>Reprendre</Button>
-                  <Button onClick={saveImage}>Enregistrer</Button>
+                  <Button onClick={saveScreenshot}>Enregistrer</Button>
                 </div>
               </>
             )}
-            <canvas ref={canvasRef} className="hidden" />
           </div>
         </DialogContent>
       </Dialog>

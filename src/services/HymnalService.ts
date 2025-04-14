@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 
 export interface Hymn {
@@ -9,13 +8,13 @@ export interface Hymn {
   category?: string;
 }
 
-// Sample data based on https://adventlife.fr/hymnes-et-louanges/
+// Expanded sample hymns list
 const sampleHymns: Hymn[] = [
   {
     id: 1,
     title: "A Toi La Gloire",
     number: 1,
-    category: "Adoration",
+    category: "Résurrection",
     lyrics: [
       "À toi la gloire, Ô Ressuscité ! À toi la victoire pour l'éternité !",
       "Brillant de lumière, l'ange est descendu, Il roule la pierre du tombeau vaincu.",
@@ -257,6 +256,66 @@ const sampleHymns: Hymn[] = [
       "Une vie vouée au néant.",
       "Sans espoir et sans lendemain,",
       "Sans refuge, sans chemin."
+    ]
+  },
+  {
+    id: 21,
+    title: "Mon Berger Est Le Seigneur",
+    number: 21,
+    category: "Confiance",
+    lyrics: [
+      "Mon berger est le Seigneur, je ne manquerai de rien",
+      "Il me fait reposer dans de verts pâturages",
+      "Il me guide près des eaux tranquilles",
+      "Il restaure mon âme"
+    ]
+  },
+  {
+    id: 22,
+    title: "Dieu Est Amour",
+    number: 22,
+    category: "Amour de Dieu",
+    lyrics: [
+      "Dieu est amour, Dieu est bonté",
+      "Son cœur déborde de tendresse",
+      "Il nous conduit par sa sagesse",
+      "Et nous protège avec fierté"
+    ]
+  },
+  {
+    id: 23,
+    title: "Je Crois En Toi Seigneur",
+    number: 23,
+    category: "Foi",
+    lyrics: [
+      "Je crois en toi Seigneur, malgré les tempêtes",
+      "Ta grâce est ma force, ton amour ma paix",
+      "Dans les moments sombres, tu es ma lumière",
+      "Mon refuge et ma forteresse"
+    ]
+  },
+  {
+    id: 24,
+    title: "Grande Est Ta Fidélité",
+    number: 24,
+    category: "Louange",
+    lyrics: [
+      "Grande est ta fidélité, ô Dieu mon Père",
+      "Chaque matin, ta grâce renouvelle",
+      "Ta compassion ne connaît pas de limites",
+      "Ta fidélité est plus grande que mes épreuves"
+    ]
+  },
+  {
+    id: 50,
+    title: "Viens, Saint-Esprit",
+    number: 50,
+    category: "Saint-Esprit",
+    lyrics: [
+      "Viens, Saint-Esprit, descends sur nous",
+      "Remplis nos cœurs de ton amour",
+      "Transforme-nous par ta puissance",
+      "Guide nos pas dans ton alliance"
     ]
   }
 ];

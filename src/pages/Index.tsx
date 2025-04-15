@@ -3,14 +3,12 @@ import React from 'react';
 import DateSelector from '@/components/DateSelector';
 import TabsContainer from '@/components/TabsContainer';
 import ActionButtons from '@/components/ActionButtons';
-import { ChurchProgramProvider } from '@/contexts/ChurchProgramContext';
+import { ChurchProgramProvider, useChurchProgram } from '@/contexts/ChurchProgramContext';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Book, Music } from 'lucide-react';
-import HymnSelector from '@/components/HymnSelector';
+import { Book } from 'lucide-react';
 import BibleVerseSelector from '@/components/BibleVerseSelector';
 import { BibleVerse } from '@/services/BibleService';
-import { Hymn } from '@/services/HymnalService';
 
 const Index = () => {
   return (
@@ -36,37 +34,13 @@ const Index = () => {
 };
 
 const FeatureButtons = () => {
-  const { updateEDSField, updateCulteField, activeTab, edsData, culteData } = useChurchProgram();
+  const { updateEDSField, updateCulteField, activeTab } = useChurchProgram();
   
   const handleVerseSelect = (verse: BibleVerse) => {
     if (activeTab === "eds") {
       updateEDSField("texteBase", `${verse.reference} - ${verse.text}`);
     } else {
       updateCulteField("texteBase", `${verse.reference} - ${verse.text}`);
-    }
-  };
-  
-  const handleHymnSelect = (hymn: Hymn) => {
-    if (activeTab === "culte") {
-      // Determine which cantique field to update based on what's already filled
-      if (!hymn.number) return;
-      
-      if (!culteData.cantique1) {
-        updateCulteField("cantique1", `#${hymn.number} - ${hymn.title}`);
-      } else if (!culteData.cantique2) {
-        updateCulteField("cantique2", `#${hymn.number} - ${hymn.title}`);
-      } else {
-        updateCulteField("cantique3", `#${hymn.number} - ${hymn.title}`);
-      }
-    } else {
-      // Determine which cantique field to update based on what's already filled
-      if (!hymn.number) return;
-      
-      if (!edsData.cantique1) {
-        updateEDSField("cantique1", `#${hymn.number} - ${hymn.title}`);
-      } else {
-        updateEDSField("cantique2", `#${hymn.number} - ${hymn.title}`);
-      }
     }
   };
   
@@ -91,31 +65,8 @@ const FeatureButtons = () => {
           </div>
         </SheetContent>
       </Sheet>
-      
-      <Sheet>
-        <SheetTrigger asChild>
-          <Button variant="outline" className="flex items-center gap-2">
-            <Music size={18} />
-            Cantique
-          </Button>
-        </SheetTrigger>
-        <SheetContent>
-          <SheetHeader>
-            <SheetTitle>Sélectionnez un cantique</SheetTitle>
-            <SheetDescription>
-              Recherchez et sélectionnez un cantique pour votre programme.
-            </SheetDescription>
-          </SheetHeader>
-          <div className="mt-4">
-            <HymnSelector onSelect={handleHymnSelect} />
-          </div>
-        </SheetContent>
-      </Sheet>
     </div>
   );
 };
-
-// Make sure to add the useChurchProgram import
-import { useChurchProgram } from '@/contexts/ChurchProgramContext';
 
 export default Index;

@@ -1,6 +1,6 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { format } from "date-fns";
-import { BibleVerse } from "@/services/BibleService";
 
 // EDS fields
 export type EDSData = {
@@ -12,7 +12,6 @@ export type EDSData = {
   introductionEDS: string;
   dixMinutesMissionnaire: string;
   texteBase: string;
-  bibleVerses?: BibleVerse[];
 };
 
 // Culte fields
@@ -23,7 +22,6 @@ export type CulteData = {
   predication: string;
   louange: string;
   texteBase: string;
-  bibleVerses?: BibleVerse[];
 };
 
 type ChurchProgramContextType = {
@@ -39,10 +37,6 @@ type ChurchProgramContextType = {
   saveChanges: () => void;
   editMode: boolean;
   toggleEditMode: () => void;
-  addEDSBibleVerse: (verse: BibleVerse) => void;
-  addCulteBibleVerse: (verse: BibleVerse) => void;
-  removeEDSBibleVerse: (index: number) => void;
-  removeCulteBibleVerse: (index: number) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
 };
@@ -56,7 +50,6 @@ const defaultEDSData: EDSData = {
   introductionEDS: "",
   dixMinutesMissionnaire: "",
   texteBase: "",
-  bibleVerses: [],
 };
 
 const defaultCulteData: CulteData = {
@@ -66,7 +59,6 @@ const defaultCulteData: CulteData = {
   predication: "",
   louange: "",
   texteBase: "",
-  bibleVerses: [],
 };
 
 const ChurchProgramContext = createContext<ChurchProgramContextType | undefined>(
@@ -158,37 +150,6 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
     setEditMode(!editMode);
   };
   
-  // Bible verse functions
-  const addEDSBibleVerse = (verse: BibleVerse) => {
-    setEDSData(prev => ({
-      ...prev,
-      bibleVerses: [...(prev.bibleVerses || []), verse]
-    }));
-  };
-  
-  const addCulteBibleVerse = (verse: BibleVerse) => {
-    setCulteData(prev => ({
-      ...prev,
-      bibleVerses: [...(prev.bibleVerses || []), verse]
-    }));
-  };
-  
-  const removeEDSBibleVerse = (index: number) => {
-    setEDSData(prev => {
-      const newVerses = [...(prev.bibleVerses || [])];
-      newVerses.splice(index, 1);
-      return { ...prev, bibleVerses: newVerses };
-    });
-  };
-  
-  const removeCulteBibleVerse = (index: number) => {
-    setCulteData(prev => {
-      const newVerses = [...(prev.bibleVerses || [])];
-      newVerses.splice(index, 1);
-      return { ...prev, bibleVerses: newVerses };
-    });
-  };
-  
   return (
     <ChurchProgramContext.Provider
       value={{
@@ -204,10 +165,6 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
         saveChanges,
         editMode,
         toggleEditMode,
-        addEDSBibleVerse,
-        addCulteBibleVerse,
-        removeEDSBibleVerse,
-        removeCulteBibleVerse,
         activeTab,
         setActiveTab,
       }}

@@ -4,7 +4,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Search, Music, List, Info } from "lucide-react";
-import { HymnalService, Hymn } from "@/services/HymnalService";
+import HymnalService from "@/services/HymnalService";
+import { Hymn } from "@/types/hymnal";
 import { toast } from "sonner";
 import { 
   Select,

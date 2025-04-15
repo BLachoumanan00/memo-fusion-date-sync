@@ -1,18 +1,23 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { format } from "date-fns";
 import { BibleVerse } from "@/services/BibleService";
+import { Hymn } from "@/services/HymnalService";
 
 // EDS fields
 export type EDSData = {
   psaume: string;
+  cantique1: string;
   priere: string;
   souhaitBienvenue: string;
   bulletinMissionaire: string;
   cinqMinutesSpeciale: string;
   introductionEDS: string;
   dixMinutesMissionnaire: string;
+  cantique2: string;
   texteBase: string;
   bibleVerses?: BibleVerse[];
+  hymns?: Hymn[];
 };
 
 // Culte fields
@@ -22,8 +27,12 @@ export type CulteData = {
   lecture: string;
   predication: string;
   louange: string;
+  cantique1: string;
   texteBase: string;
+  cantique2: string;
+  cantique3: string;
   bibleVerses?: BibleVerse[];
+  hymns?: Hymn[];
 };
 
 type ChurchProgramContextType = {
@@ -43,20 +52,27 @@ type ChurchProgramContextType = {
   addCulteBibleVerse: (verse: BibleVerse) => void;
   removeEDSBibleVerse: (index: number) => void;
   removeCulteBibleVerse: (index: number) => void;
+  addEDSHymn: (hymn: Hymn) => void;
+  addCulteHymn: (hymn: Hymn) => void;
+  removeEDSHymn: (index: number) => void;
+  removeCulteHymn: (index: number) => void;
   activeTab: string;
   setActiveTab: (tab: string) => void;
 };
 
 const defaultEDSData: EDSData = {
   psaume: "",
+  cantique1: "",
   priere: "",
   souhaitBienvenue: "",
   bulletinMissionaire: "",
   cinqMinutesSpeciale: "",
   introductionEDS: "",
   dixMinutesMissionnaire: "",
+  cantique2: "",
   texteBase: "",
   bibleVerses: [],
+  hymns: [],
 };
 
 const defaultCulteData: CulteData = {
@@ -65,8 +81,12 @@ const defaultCulteData: CulteData = {
   lecture: "",
   predication: "",
   louange: "",
+  cantique1: "",
   texteBase: "",
+  cantique2: "",
+  cantique3: "",
   bibleVerses: [],
+  hymns: [],
 };
 
 const ChurchProgramContext = createContext<ChurchProgramContextType | undefined>(
@@ -189,6 +209,37 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
   
+  // Hymn functions
+  const addEDSHymn = (hymn: Hymn) => {
+    setEDSData(prev => ({
+      ...prev,
+      hymns: [...(prev.hymns || []), hymn]
+    }));
+  };
+  
+  const addCulteHymn = (hymn: Hymn) => {
+    setCulteData(prev => ({
+      ...prev,
+      hymns: [...(prev.hymns || []), hymn]
+    }));
+  };
+  
+  const removeEDSHymn = (index: number) => {
+    setEDSData(prev => {
+      const newHymns = [...(prev.hymns || [])];
+      newHymns.splice(index, 1);
+      return { ...prev, hymns: newHymns };
+    });
+  };
+  
+  const removeCulteHymn = (index: number) => {
+    setCulteData(prev => {
+      const newHymns = [...(prev.hymns || [])];
+      newHymns.splice(index, 1);
+      return { ...prev, hymns: newHymns };
+    });
+  };
+
   return (
     <ChurchProgramContext.Provider
       value={{
@@ -208,6 +259,10 @@ export const ChurchProgramProvider: React.FC<{ children: React.ReactNode }> = ({
         addCulteBibleVerse,
         removeEDSBibleVerse,
         removeCulteBibleVerse,
+        addEDSHymn,
+        addCulteHymn,
+        removeEDSHymn,
+        removeCulteHymn,
         activeTab,
         setActiveTab,
       }}

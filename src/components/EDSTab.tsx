@@ -8,6 +8,7 @@ const EDSTab: React.FC = () => {
 
   const fields = [
     { label: "Psaume:", key: "psaume" as const },
+    { label: "Cantique:", key: "cantique1" as const },
     { label: "Prière:", key: "priere" as const },
     { label: "Souhait de bienvenue:", key: "souhaitBienvenue" as const },
     { label: "Bulletin Missionaire:", key: "bulletinMissionaire" as const },
@@ -15,6 +16,7 @@ const EDSTab: React.FC = () => {
     { label: "Introduction EDS:", key: "introductionEDS" as const },
     { label: "10 Minutes Missionnaire:", key: "dixMinutesMissionnaire" as const },
     { label: "Texte de base:", key: "texteBase" as const },
+    { label: "Cantique:", key: "cantique2" as const },
   ];
 
   return (
